@@ -11,6 +11,13 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# Logging
+LOG_DIR=/var/log/puk
+LOG_FILE="$LOG_DIR/shutdown-schedule.log"
+mkdir -p "$LOG_DIR"
+touch "$LOG_FILE"
+exec > >(tee -a "$LOG_FILE") 2>&1
+
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 CONFIG_FILE="$SCRIPT_DIR/../config/config.env"
 
