@@ -62,6 +62,13 @@ EOF
         ;;
 esac
 
+# Ensure git is installed (used to clone repo)
+if ! command -v git >/dev/null 2>&1; then
+    echo "Installing git..."
+    apt-get update
+    apt-get install -y git
+fi
+
 # Create installation directory
 echo "Creating installation directory..."
 
