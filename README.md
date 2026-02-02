@@ -29,7 +29,7 @@ sudo ./scripts/setup.sh
 If you want a single command without cloning first:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Peitsman/Peitsman-Ubuntu-Kiosk/main/scripts/setup.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/Peitsman/Peitsman-Ubuntu-Kiosk/main/install.sh | sudo bash
 ```
 
 ## Configuration
