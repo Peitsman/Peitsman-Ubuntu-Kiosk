@@ -22,4 +22,14 @@ rm -rf "$TARGET_DIR"
 git clone "$REPO_URL" "$TARGET_DIR"
 
 echo "Running setup..."
-bash "$TARGET_DIR/scripts/setup.sh"
+if [ -t 0 ]; then
+    bash "$TARGET_DIR/scripts/setup.sh"
+else
+    if [ -r /dev/tty ]; then
+        bash "$TARGET_DIR/scripts/setup.sh" </dev/tty
+    else
+        echo "No TTY available for interactive prompts."
+        echo "Run: sudo $TARGET_DIR/scripts/setup.sh"
+        exit 1
+    fi
+fi
