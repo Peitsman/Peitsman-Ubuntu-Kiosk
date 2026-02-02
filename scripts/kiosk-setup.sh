@@ -43,11 +43,11 @@ fi
 case "$KIOSK_BROWSER" in
     chromium|chromium-browser)
         BINARY=$(command -v chromium-browser || command -v chromium || command -v google-chrome || command -v google-chrome-stable || true)
-        BROWSER_ARGS="--kiosk --incognito --disable-infobars --disable-session-crashed-bubble --noerrdialogs --disable-restore-session-state"
+        BROWSER_ARGS="--kiosk --incognito --disable-infobars --disable-session-crashed-bubble --noerrdialogs --disable-restore-session-state --hide-scrollbars --disable-translate --disable-features=Translate"
         ;;
     chrome|google-chrome)
         BINARY=$(command -v google-chrome || command -v google-chrome-stable || true)
-        BROWSER_ARGS="--kiosk --incognito --disable-infobars --disable-session-crashed-bubble --noerrdialogs --disable-restore-session-state"
+        BROWSER_ARGS="--kiosk --incognito --disable-infobars --disable-session-crashed-bubble --noerrdialogs --disable-restore-session-state --hide-scrollbars --disable-translate --disable-features=Translate"
         ;;
     firefox)
         BINARY=$(command -v firefox || true)
