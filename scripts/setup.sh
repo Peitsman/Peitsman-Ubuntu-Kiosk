@@ -213,6 +213,9 @@ bash $dir/scripts/wallpaper-config.sh
 
 # Set boot logo (Plymouth)
 echo "Setting boot logo..."
+echo "Note: this step can temporarily drop you to a blank TTY."
+echo "If the screen goes blank, wait or switch TTY (Ctrl+Alt+F2/F3)."
+sleep 2
 bash $dir/scripts/plymouth-config.sh
 
 # Apply kiosk configuration (autostart)
@@ -222,3 +225,7 @@ bash $dir/scripts/kiosk-setup.sh
 # Apply daily shutdown schedule
 echo "Applying shutdown schedule..."
 bash $dir/scripts/shutdown-schedule.sh
+
+echo "Setup complete. Rebooting in 10 seconds..."
+sleep 10
+reboot

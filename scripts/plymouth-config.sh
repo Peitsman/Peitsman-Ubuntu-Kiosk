@@ -40,9 +40,22 @@ screen_width = Window.GetWidth();
 screen_height = Window.GetHeight();
 logo_width = logo_image.GetWidth();
 logo_height = logo_image.GetHeight();
-logo_x = (screen_width - logo_width) / 2;
-logo_y = (screen_height - logo_height) / 2;
+
+max_width = screen_width * 0.5;
+max_height = screen_height * 0.5;
+scale_w = max_width / logo_width;
+scale_h = max_height / logo_height;
+scale = 1.0;
+if (scale_w < scale) scale = scale_w;
+if (scale_h < scale) scale = scale_h;
+
 logo_sprite = Sprite(logo_image);
+logo_sprite.SetScale(scale, scale);
+
+scaled_width = logo_width * scale;
+scaled_height = logo_height * scale;
+logo_x = (screen_width - scaled_width) / 2;
+logo_y = (screen_height - scaled_height) / 2;
 logo_sprite.SetPosition(logo_x, logo_y, 0);
 EOF
 
