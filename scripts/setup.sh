@@ -76,6 +76,13 @@ if ! command -v git >/dev/null 2>&1; then
     apt-get install -y git
 fi
 
+# Ensure OpenSSH server is installed
+if ! dpkg -s openssh-server >/dev/null 2>&1; then
+    echo "Installing OpenSSH server..."
+    apt-get update
+    apt-get install -y openssh-server
+fi
+
 # Create installation directory
 echo "Creating installation directory..."
 
@@ -206,6 +213,10 @@ bash $dir/scripts/power-config.sh
 # Disable notifications
 echo "Disabling notifications..."
 bash $dir/scripts/notifications-config.sh
+
+# Enable SSH server
+echo "Enabling SSH server..."
+bash $dir/scripts/ssh-server.sh
 
 # Set wallpaper
 echo "Setting wallpaper..."
