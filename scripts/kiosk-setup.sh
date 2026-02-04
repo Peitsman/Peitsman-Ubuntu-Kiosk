@@ -80,6 +80,7 @@ mkdir -p "$AUTOSTART_DIR"
 
 cat > "$LAUNCHER" << EOF
 #!/bin/bash
+sleep 10 # Wait for the desktop environment to be fully loaded
 exec "$BINARY" $BROWSER_ARGS "$KIOSK_URL"
 EOF
 
