@@ -43,11 +43,11 @@ fi
 case "$KIOSK_BROWSER" in
     chromium|chromium-browser)
         BINARY=$(command -v chromium-browser || command -v chromium || command -v google-chrome || command -v google-chrome-stable || true)
-        BROWSER_ARGS="--kiosk --incognito --disable-infobars --disable-session-crashed-bubble --noerrdialogs --disable-restore-session-state --hide-scrollbars --disable-translate --disable-features=Translate"
+        BROWSER_ARGS="--kiosk --incognito --disable-infobars --disable-session-crashed-bubble --noerrdialogs --disable-restore-session-state --hide-scrollbars --disable-translate --disable-features=Translate --disable-renderer-backgrounding --disable-backgrounding-occluded-windows --disable-background-timer-throttling --no-first-run"
         ;;
     chrome|google-chrome)
         BINARY=$(command -v google-chrome || command -v google-chrome-stable || true)
-        BROWSER_ARGS="--kiosk --incognito --disable-infobars --disable-session-crashed-bubble --noerrdialogs --disable-restore-session-state --hide-scrollbars --disable-translate --disable-features=Translate"
+        BROWSER_ARGS="--kiosk --incognito --disable-infobars --disable-session-crashed-bubble --noerrdialogs --disable-restore-session-state --hide-scrollbars --disable-translate --disable-features=Translate --disable-renderer-backgrounding --disable-backgrounding-occluded-windows --disable-background-timer-throttling --no-first-run"
         ;;
     firefox)
         BINARY=$(command -v firefox || true)
@@ -116,7 +116,13 @@ mkdir -p "$AUTOSTART_DIR"
 cat > "$LAUNCHER" << EOF
 #!/bin/bash
 sleep 10 # Wait for the desktop environment to be fully loaded
-exec "$BINARY" $BROWSER_ARGS "$KIOSK_URL"
+xset s off
+xset -dpms
+xset s noblank
+while true; do
+    "$BINARY" $BROWSER_ARGS "$KIOSK_URL"
+    sleep 2
+done
 EOF
 
 chmod +x "$LAUNCHER"
