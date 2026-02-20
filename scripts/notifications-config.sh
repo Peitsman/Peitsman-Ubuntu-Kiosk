@@ -30,6 +30,31 @@ if [ -S "$USER_BUS" ]; then
         gsettings set org.gnome.desktop.notifications show-banners false || true
     sudo -u "$ACTUAL_USER" DBUS_SESSION_BUS_ADDRESS="unix:path=$USER_BUS" \
         gsettings set org.gnome.desktop.notifications show-in-lock-screen false || true
+
+    echo "Disabling GNOME Software update checks and update notifications..."
+    sudo -u "$ACTUAL_USER" DBUS_SESSION_BUS_ADDRESS="unix:path=$USER_BUS" \
+        gsettings set org.gnome.software allow-updates false || true
+    sudo -u "$ACTUAL_USER" DBUS_SESSION_BUS_ADDRESS="unix:path=$USER_BUS" \
+        gsettings set org.gnome.software download-updates false || true
+    sudo -u "$ACTUAL_USER" DBUS_SESSION_BUS_ADDRESS="unix:path=$USER_BUS" \
+        gsettings set org.gnome.software download-updates-notify false || true
+
+    # Older Ubuntu releases may still expose this plugin key.
+    sudo -u "$ACTUAL_USER" DBUS_SESSION_BUS_ADDRESS="unix:path=$USER_BUS" \
+        gsettings set org.gnome.settings-daemon.plugins.updates active false || true
+
+    echo "Disabling update-notifier autostart for this user (if present)..."
+    USER_AUTOSTART_DIR="/home/$ACTUAL_USER/.config/autostart"
+    mkdir -p "$USER_AUTOSTART_DIR"
+    chown "$ACTUAL_USER:$ACTUAL_USER" "$USER_AUTOSTART_DIR"
+    cat > "$USER_AUTOSTART_DIR/update-notifier.desktop" << EOF
+[Desktop Entry]
+Type=Application
+Name=Update Notifier
+Hidden=true
+X-GNOME-Autostart-enabled=false
+EOF
+    chown "$ACTUAL_USER:$ACTUAL_USER" "$USER_AUTOSTART_DIR/update-notifier.desktop"
 else
     echo "Warning: GNOME session bus not found at $USER_BUS"
     echo "Run this script while $ACTUAL_USER is logged in for GNOME settings to apply."

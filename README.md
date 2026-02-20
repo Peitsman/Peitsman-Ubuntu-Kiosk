@@ -8,6 +8,7 @@ Ubuntu kiosk setup scripts for a dashboard PC. This repo configures:
 - Plymouth boot logo set to `assets/logo.png`
 - Kiosk autostart (browser in kiosk mode)
 - Daily shutdown via systemd timer
+- Weekly apt update/upgrade (Friday 17:30) via systemd timer
 
 ## Requirements
 - Ubuntu with systemd
@@ -63,6 +64,7 @@ Notes:
 - Replaces Plymouth boot logo.
 - Creates autostart to launch the kiosk browser.
 - Schedules daily shutdown.
+- Schedules weekly apt update/upgrade on Friday at 17:30.
 
 ## Files and scripts
 - `scripts/setup.sh` main installer
@@ -72,6 +74,8 @@ Notes:
 - `scripts/plymouth-config.sh` sets boot logo
 - `scripts/kiosk-setup.sh` configures kiosk autostart
 - `scripts/shutdown-schedule.sh` schedules daily shutdown
+- `scripts/weekly-update-schedule.sh` schedules weekly apt update/upgrade
+- `scripts/weekly-update-run.sh` runs apt update/upgrade with logging
 
 ## Troubleshooting
 - GNOME settings not applied:

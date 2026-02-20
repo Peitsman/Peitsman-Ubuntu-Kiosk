@@ -237,6 +237,10 @@ bash $dir/scripts/kiosk-setup.sh
 echo "Applying shutdown schedule..."
 bash $dir/scripts/shutdown-schedule.sh
 
+# Apply weekly update/upgrade schedule
+echo "Applying weekly update/upgrade schedule..."
+bash $dir/scripts/weekly-update-schedule.sh
+
 echo "Setup complete. Rebooting in 10 seconds..."
 sleep 10
 reboot
