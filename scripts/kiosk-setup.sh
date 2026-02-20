@@ -68,16 +68,22 @@ if [ "$KIOSK_BROWSER" = "chromium" ] || [ "$KIOSK_BROWSER" = "chromium-browser" 
     echo "Applying browser policy to disable translate prompts..."
 
     CHROMIUM_POLICY_DIR="/etc/chromium/policies/managed"
+    CHROMIUM_UBUNTU_POLICY_DIR="/etc/chromium-browser/policies/managed"
+    CHROMIUM_SNAP_POLICY_DIR="/var/snap/chromium/current/policies/managed"
     CHROME_POLICY_DIR="/etc/opt/chrome/policies/managed"
 
     if [ "$KIOSK_BROWSER" = "chromium" ] || [ "$KIOSK_BROWSER" = "chromium-browser" ]; then
-        mkdir -p "$CHROMIUM_POLICY_DIR"
-        cat > "$CHROMIUM_POLICY_DIR/puk-kiosk.json" << 'EOF'
+        for POLICY_DIR in "$CHROMIUM_POLICY_DIR" "$CHROMIUM_UBUNTU_POLICY_DIR" "$CHROMIUM_SNAP_POLICY_DIR"; do
+            mkdir -p "$POLICY_DIR"
+            cat > "$POLICY_DIR/puk-kiosk.json" << 'EOF'
 {
   "TranslateEnabled": false
 }
 EOF
-        echo "Chromium policy written: $CHROMIUM_POLICY_DIR/puk-kiosk.json"
+            chown root:root "$POLICY_DIR/puk-kiosk.json"
+            chmod 644 "$POLICY_DIR/puk-kiosk.json"
+            echo "Chromium policy written: $POLICY_DIR/puk-kiosk.json"
+        done
     fi
 
     if [ "$KIOSK_BROWSER" = "chrome" ] || [ "$KIOSK_BROWSER" = "google-chrome" ]; then
@@ -87,6 +93,8 @@ EOF
   "TranslateEnabled": false
 }
 EOF
+        chown root:root "$CHROME_POLICY_DIR/puk-kiosk.json"
+        chmod 644 "$CHROME_POLICY_DIR/puk-kiosk.json"
         echo "Chrome policy written: $CHROME_POLICY_DIR/puk-kiosk.json"
     fi
 fi
