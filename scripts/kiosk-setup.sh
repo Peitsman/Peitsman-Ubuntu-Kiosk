@@ -64,6 +64,33 @@ if [ -z "$BINARY" ]; then
     exit 1
 fi
 
+if [ "$KIOSK_BROWSER" = "chromium" ] || [ "$KIOSK_BROWSER" = "chromium-browser" ] || [ "$KIOSK_BROWSER" = "chrome" ] || [ "$KIOSK_BROWSER" = "google-chrome" ]; then
+    echo "Applying browser policy to disable translate prompts..."
+
+    CHROMIUM_POLICY_DIR="/etc/chromium/policies/managed"
+    CHROME_POLICY_DIR="/etc/opt/chrome/policies/managed"
+
+    if [ "$KIOSK_BROWSER" = "chromium" ] || [ "$KIOSK_BROWSER" = "chromium-browser" ]; then
+        mkdir -p "$CHROMIUM_POLICY_DIR"
+        cat > "$CHROMIUM_POLICY_DIR/puk-kiosk.json" << 'EOF'
+{
+  "TranslateEnabled": false
+}
+EOF
+        echo "Chromium policy written: $CHROMIUM_POLICY_DIR/puk-kiosk.json"
+    fi
+
+    if [ "$KIOSK_BROWSER" = "chrome" ] || [ "$KIOSK_BROWSER" = "google-chrome" ]; then
+        mkdir -p "$CHROME_POLICY_DIR"
+        cat > "$CHROME_POLICY_DIR/puk-kiosk.json" << 'EOF'
+{
+  "TranslateEnabled": false
+}
+EOF
+        echo "Chrome policy written: $CHROME_POLICY_DIR/puk-kiosk.json"
+    fi
+fi
+
 # Ensure cursor auto-hide is available
 if ! command -v unclutter-xfixes >/dev/null 2>&1; then
     echo "Installing unclutter-xfixes..."
